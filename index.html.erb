@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .c_align {
+      text-align: center;
+    }
+    .title_text {}
+    .information {
+      font-style: italic;
+    }
+    .container {
+      background: aliceblue;
+      border: 2px double darkgray;
+      padding: 20px;
+    }
+    .cell {
+      background: white;
+      border-color: lightgray #b3b3b3 #b3b3b3 lightgray;
+      border-radius: 2px;
+      border-style: solid;
+      border-width: 1px;
+      box-shadow: 20px 19px 8px lightslategray;
+      cursor: pointer;
+      display: inline-block;
+      height: 30px;
+      margin: 2px;
+      width: 30px;
+    }
+    .cell.closed {
+      background: lightgoldenrodyellow;
+    }
+    .cell.closed:hover {
+      background: tan;
+      border-color: black;
+      border-style: dotted;
+      position: relative;
+      top: 2px;
+    }
+  </style>
+
+  <!-- JAVASCRIPTS  -->
+
+  <script type="text/javascript">
+    function newGame() {
+      h = document.getElementById('range_h').value;
+      w = document.getElementById('range_w').value;
+      b = document.getElementById('bombs_c').value;
+      z = document.getElementById('zoom_px').value;
+      window.location = '/new?h=H&w=W&b=B&z=Z'.replace('H',h).replace('W',w).replace('B',b).replace('Z',z);
+    }
+    document.addEventListener("DOMContentLoaded", function(event) {
+      document.getElementById('range_h').addEventListener('change', function(){ document.getElementById('current_range_h').innerHTML = this.value; });
+      document.getElementById('range_w').addEventListener('change', function(){ document.getElementById('current_range_w').innerHTML = this.value; });
+      document.getElementById('bombs_c').addEventListener('change', function(){ document.getElementById('current_bombs_c').innerHTML = this.value; });
+      document.getElementById('zoom_px').addEventListener('change', function(){ document.getElementById('current_zoom_px').innerHTML = this.value; });
+    });
+  </script>
+</head>
+<body>
+  <h1 class="title_text c_align"><a href="http://github.com/vitalyp" title="Autor..">Miner Game</a></h1>
+  <div class="information c_align"><a href="/" title="Restart">NeW Game!</a></div>
+
+  <div class="container c_align">
+    <% 10.times do |h| %>
+      <% 10.times do |w| %>
+      <div class="cell closed" onclick="window.location='/clicked/<%= h*10+w %>'"></div>
+      <% end %>
+      <br/>
+    <% end %>
+  </div>
+
+  <div class="information c_align">
+    <p class="range_slider">Height: <input type="range" id="range_h" min="1" max="40" value="10"> <span id="current_range_h">10</span> cells.</p>
+    <p class="range_slider">Width : <input type="range" id="range_w" min="1" max="40" value="10"> <span id="current_range_w">10</span> cells.</p>
+    <p class="range_slider">Bombs : <input type="range" id="bombs_c" min="1" max="40" value="10"> <span id="current_bombs_c">10</span> pieces.</p>
+    <p class="range_slider">Zoom :  <input type="range" id="zoom_px" min="5" max="60" value="32"> <span id="current_zoom_px">32</span> pixels.</p>
+    <a onclick='newGame()' href='#'>New Game!</a>
+  </div>
+  </body>
+</html>

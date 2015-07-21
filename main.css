@@ -1,0 +1,35 @@
+.c_align {
+    text-align: center;
+}
+.title_text {}
+.information {
+    font-style: italic;
+}
+.container {
+    background: aliceblue;
+    border: 2px double darkgray;
+    padding: 20px;
+}
+.cell {
+    background: white;
+    border-color: lightgray #b3b3b3 #b3b3b3 lightgray;
+    border-radius: 2px;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 20px 19px 8px lightslategray;
+    cursor: pointer;
+    display: inline-block;
+    height: 30px;
+    margin: 2px;
+    width: 30px;
+}
+.cell.closed {
+    background: lightgoldenrodyellow;
+}
+.cell.closed:hover {
+    background: tan;
+    border-color: black;
+    border-style: dotted;
+    position: relative;
+    top: 2px;
+}

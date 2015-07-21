@@ -2,40 +2,11 @@
 <html>
 <head>
   <style>
-    .c_align {
-      text-align: center;
-    }
-    .title_text {}
-    .information {
-      font-style: italic;
-    }
-    .container {
-      background: aliceblue;
-      border: 2px double darkgray;
-      padding: 20px;
-    }
+    <%= main_css %>
+    <%= ext_css %>
     .cell {
-      background: white;
-      border-color: lightgray #b3b3b3 #b3b3b3 lightgray;
-      border-radius: 2px;
-      border-style: solid;
-      border-width: 1px;
-      box-shadow: 20px 19px 8px lightslategray;
-      cursor: pointer;
-      display: inline-block;
-      height: 30px;
-      margin: 2px;
-      width: 30px;
-    }
-    .cell.closed {
-      background: lightgoldenrodyellow;
-    }
-    .cell.closed:hover {
-      background: tan;
-      border-color: black;
-      border-style: dotted;
-      position: relative;
-      top: 2px;
+      height: <%=miner_game_z%>px;
+      width: <%=miner_game_z%>px;
     }
   </style>
 
@@ -62,19 +33,19 @@
   <div class="information c_align"><a href="/" title="Restart">NeW Game!</a></div>
 
   <div class="container c_align">
-    <% 10.times do |h| %>
-      <% 10.times do |w| %>
-      <div class="cell closed" onclick="window.location='/clicked/<%= h*10+w %>'"></div>
+    <% miner_game_h.times do |h| %>
+      <% miner_game_w.times do |w| %>
+      <div class="cell closed" onclick="window.location='/clicked/<%= h*miner_game_w+w %>'"></div>
       <% end %>
       <br/>
     <% end %>
   </div>
 
   <div class="information c_align">
-    <p class="range_slider">Height: <input type="range" id="range_h" min="1" max="40" value="10"> <span id="current_range_h">10</span> cells.</p>
-    <p class="range_slider">Width : <input type="range" id="range_w" min="1" max="40" value="10"> <span id="current_range_w">10</span> cells.</p>
-    <p class="range_slider">Bombs : <input type="range" id="bombs_c" min="1" max="40" value="10"> <span id="current_bombs_c">10</span> pieces.</p>
-    <p class="range_slider">Zoom :  <input type="range" id="zoom_px" min="5" max="60" value="32"> <span id="current_zoom_px">32</span> pixels.</p>
+    <p class="range_slider">Height: <input type="range" id="range_h" min="1" max="40" value="<%=miner_game_h%>"> <span id="current_range_h"><%=miner_game_h%></span> cells.</p>
+    <p class="range_slider">Width : <input type="range" id="range_w" min="1" max="40" value="<%=miner_game_w%>"> <span id="current_range_w"><%=miner_game_w%></span> cells.</p>
+    <p class="range_slider">Bombs : <input type="range" id="bombs_c" min="1" max="40" value="<%=miner_game_b%>"> <span id="current_bombs_c"><%=miner_game_b%></span> pieces.</p>
+    <p class="range_slider">Zoom :  <input type="range" id="zoom_px" min="5" max="60" value="<%=miner_game_z%>"> <span id="current_zoom_px"><%=miner_game_z%></span> pixels.</p>
     <a onclick='newGame()' href='#'>New Game!</a>
   </div>
   </body>

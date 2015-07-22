@@ -7,17 +7,19 @@ class TestGameProcessor <  Minitest::Test
   end
 
   def test_bomb_at
+    x = MinerGameProcessor::CELL[:mine]
     @game_processor.map = [
-      [0, 0, 0,-1],
+      [0, 0, 0, x],
       [0, 0, 0, 0],
       [0, 0, 0, 0],
       [0, 0, 0, 0]]
     @game_processor.rows = 4
     @game_processor.cols = 4
     @game_processor.bombs = 1
-    assert_equal(@game_processor.bomb_at(0), false)
-    assert_equal(@game_processor.bomb_at(1), false)
-    assert_equal(@game_processor.bomb_at(2), true) # FIXME
+    assert_equal(false, @game_processor.bomb_at(0))
+    assert_equal(false, @game_processor.bomb_at(1))
+    assert_equal(false, @game_processor.bomb_at(2))
+    assert_equal(true, @game_processor.bomb_at(3)) #FIXME
   end
 
 end

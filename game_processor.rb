@@ -45,12 +45,22 @@ class MinerGameProcessor
   
   private
   
-  def bomb_at(index)
-    index < 0 || index > @rows*@cols || @map[index] != CELL[:mine] ? 0 : 1
+  def bomb_at(index, row)
+    row < 0 || row >= @rows || index < 0 || index > @rows*@cols || @map[index] != CELL[:mine] ? false : true
   end
 
   def bombs_count_around(index)
-    bomb_at(index-1)+bomb_at(index+1)+bomb_at(index-@cols)+bomb_at(index+@cols)+bomb_at(index-@cols-1)+bomb_at(index-@cols+1)+bomb_at(index+@cols-1)+bomb_at(index+@cols+1)
+    row = index/@cols
+    count = 0
+    count += 1 if bomb_at(index-1, row) # left, same row
+    count += 1 if bomb_at(index+1, row) # right, same row
+    count += 1 if bomb_at(index-@cols, row-1) # top, row above
+    count += 1 if bomb_at(index+@cols, row+1) # bottom, row below
+    count += 1 if bomb_at(index-@cols-1, row-1) # top-left, row above
+    count += 1 if bomb_at(index-@cols+1, row-1) # top-right, row above
+    count += 1 if bomb_at(index+@cols-1, row+1) # bottom-left, row below
+    count += 1 if bomb_at(index+@cols+1, row+1) # bottom-right, row below
+    count
   end
   
   def init_map
@@ -58,7 +68,7 @@ class MinerGameProcessor
     #put mines
     @bombs.times do
       free_indexes = @map.map.with_index{|x, i| i if x!=CELL[:mine]}.compact
-      rand_index = rand*10000%free_indexes.size
+      rand_index = rand(free_indexes.size)
       @map[rand_index] = CELL[:mine]
     end
     #put numbers

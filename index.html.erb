@@ -33,7 +33,10 @@
   <div class="container c_align">
     <% miner_game_h.times do |h| %>
       <% miner_game_w.times do |w| %>
-      <div class="cell closed" onclick="window.location='/clicked/<%= h*miner_game_w+w %>'"></div>
+        <% index = h*miner_game_w+w %>
+        <div class="cell closed" onclick="window.location='/clicked/<%= index %>'">
+          <%= game.map[index] if game%>
+        </div>
       <% end %>
       <br/>
     <% end %>

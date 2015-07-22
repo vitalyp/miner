@@ -13,6 +13,7 @@ miner_game_z = MinerGameConfig::DEFAULTS[:map_cell_px]
 main_css = IO.read('main.css')
 ext_css = IO.read('ext.css')
 favicon = IO.read('favicon.ico')
+game = nil
 
 # deprecated?
 new_game_path = Proc.new do |h,w,b,z|

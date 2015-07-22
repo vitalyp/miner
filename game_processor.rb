@@ -43,23 +43,24 @@ class MinerGameProcessor
     init_map
   end
   
-  private
+  #private
   
-  def bomb_at(index, row)
+  def bomb_at(index)
+    row = index/@cols
     row < 0 || row >= @rows || index < 0 || index > @rows*@cols || @map[index] != CELL[:mine] ? false : true
   end
 
   def bombs_count_around(index)
-    row = index/@cols
+
     count = 0
-    count += 1 if bomb_at(index-1, row) # left, same row
-    count += 1 if bomb_at(index+1, row) # right, same row
-    count += 1 if bomb_at(index-@cols, row-1) # top, row above
-    count += 1 if bomb_at(index+@cols, row+1) # bottom, row below
-    count += 1 if bomb_at(index-@cols-1, row-1) # top-left, row above
-    count += 1 if bomb_at(index-@cols+1, row-1) # top-right, row above
-    count += 1 if bomb_at(index+@cols-1, row+1) # bottom-left, row below
-    count += 1 if bomb_at(index+@cols+1, row+1) # bottom-right, row below
+    count += 1 if bomb_at(index-1) # left, same row
+    count += 1 if bomb_at(index+1) # right, same row
+    count += 1 if bomb_at(index-@cols) # top, row above
+    count += 1 if bomb_at(index+@cols) # bottom, row below
+    count += 1 if bomb_at(index-@cols-1) # top-left, row above
+    count += 1 if bomb_at(index-@cols+1) # top-right, row above
+    count += 1 if bomb_at(index+@cols-1) # bottom-left, row below
+    count += 1 if bomb_at(index+@cols+1) # bottom-right, row below
     count
   end
   

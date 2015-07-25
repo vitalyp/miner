@@ -31,5 +31,6 @@
     border-color: black;
     border-style: dotted;
     position: relative;
+    box-shadow: none;
     top: 2px;
 }

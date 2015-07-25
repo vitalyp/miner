@@ -3,11 +3,11 @@ module MinerGameConfig
   DEFAULTS = { map_rows: 10, map_cols: 10, map_bombs: 10, map_cell_px: 32   }
   MAP_MAX_COLS = 30
   MAP_MAX_ROWS = 30
+  MAX_GAME_INSTANCES = 100 # INFO: noMemory limitation fix in perspective
 end
 
 # Contains and Produces isolated Game entities
 class MinerGameContainer
-  MAX_DATA_ITEMS = 100 # INFO: noMemory limitation fix in perspective
   @@data = []
   def self.find_or_create_by_sess_key(sess_key)
     game = @@data.find{|g| g.sess_key == sess_key}
@@ -21,7 +21,7 @@ end
 class MinerGameProcessor
   attr_accessor(:rows, :cols, :bombs, :map, :sess_key)
   
-  CELL = { mine: -1 }
+  CELL = { mine: 'x' }
 
   def initialize(sess_key)
     @sess_key == sess_key
@@ -76,8 +76,12 @@ class MinerGameProcessor
     #put numbers
     @map.each_with_index do |x, i|
       next if x == CELL[:mine]
-      @map[i] = bombs_count_around(i)
+      @map[i] = -bombs_count_around(i)
     end
+  end
+  
+  def click_to(index)
+    @map[index] = -@map[index] if @map[index].to_i < 0
   end
 
 end

@@ -26,6 +26,9 @@ end
 b_env = binding
 
 game_server.mount_proc('/'){ |req, resp|
+  session_key = req['session_key']
+  game = MinerGameContainer.find_or_create_by_sess_key(session_key)
+      
   case req.path
     when '/favicon.ico'
       resp['Content-Type'] = 'image/x-icon'
@@ -37,15 +40,18 @@ game_server.mount_proc('/'){ |req, resp|
       miner_game_b = (req.query["b"] || DEFAULT_BOMBS).to_i
       miner_game_z = (req.query["z"] || DEFAULT_ZOOM).to_i
 
-      session_key = req['session_key']
-      game = MinerGameContainer.find_or_create_by_sess_key(session_key)
+      #session_key = req['session_key']
+      #game = MinerGameContainer.find_or_create_by_sess_key(session_key)
       game.init_game(miner_game_h, miner_game_w, miner_game_b)
 
       resp['Content-Type'] = 'text/html'
       resp.body = ERB.new(IO.read('index.html.erb')).result(b_env)
     when '/clicked'
       clicked_index = req.query["clicked_index"].to_i
+      game.click_to(clicked_index)
       puts "clicked_index = #{clicked_index}"
+      resp['Content-Type'] = 'text/html'
+      resp.body = ERB.new(IO.read('index.html.erb')).result(b_env)
     else
       resp['Content-Type'] = 'text/html'
       resp.body = ERB.new(IO.read('index.html.erb')).result(b_env)

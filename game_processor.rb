@@ -82,7 +82,7 @@ class MinerGameProcessor
     @bombs.times do
       free_indexes = @map.map.with_index{|x, i| i if x!=CELL[:mine]}.compact
       rand_index = rand(free_indexes.size)
-      @map[rand_index] = CELL[:mine]
+      @map[free_indexes[rand_index]] = CELL[:mine]
     end
     #put numbers
     @map.each_with_index do |x, i|

@@ -3,7 +3,7 @@ module MinerGameConfig
   DEFAULTS = { map_rows: 10, map_cols: 10, map_bombs: 10, map_cell_px: 32   }
   MAP_MAX_COLS = 30
   MAP_MAX_ROWS = 30
-  MAX_GAME_INSTANCES = 100 # INFO: noMemory limitation fix in perspective
+  MAX_GAME_INSTANCES = 100 # INFO: limitation value
 end
 
 # Contains and Produces isolated Game entities
@@ -11,26 +11,33 @@ class MinerGameContainer
   @@data = []
   def self.find_or_create_by_sess_key(sess_key)
     game = @@data.find{|g| g.sess_key == sess_key}
-    game = MinerGameProcessor.new(sess_key) unless game
+    unless game
+      game = MinerGameProcessor.new(sess_key)
+      @@data.push(game)
+      @@data.shift if @@data.size >= MinerGameConfig::MAX_GAME_INSTANCES # Hard remove first game
+    end
     game
+  end
+  def self.get_games
+    @@data
   end
 end
 
 # Game processor is a multy-session, persisted instance.
 # It contains isolated Game entity, and responsible for it
 class MinerGameProcessor
-  attr_accessor(:rows, :cols, :bombs, :map, :sess_key)
+  attr_accessor(:rows, :cols, :bombs, :zoom, :map, :sess_key, :started)
   
   CELL = { mine: 'x' }
 
   def initialize(sess_key)
-    @sess_key == sess_key
+    @sess_key= sess_key
   end
   
   # Construct new game map with specified attributes:
-  # <r> - map rows count, <c> - map columns count, <b> - mines count per map
-  def init_game(r, c, b)
-    attr_exists =  !!(r && c && b)
+  # <r> - map rows count, <c> - map columns count, <b> - mines count per map, <z> - cell zoom factor (px)
+  def init_game(r, c, b, z)
+    attr_exists =  !!(r && c && b && z)
     map_rows_range = (1..MinerGameConfig::MAP_MAX_ROWS)
     map_cols_range = (1..MinerGameConfig::MAP_MAX_COLS)
     attr_range_match = map_rows_range.include?(r) && map_cols_range.include?(c) && r*c>1 && (1..r*c-1).include?(b)
@@ -38,9 +45,10 @@ class MinerGameProcessor
     raise '[ERROR:GameProcessor] Initialization parameters are not correct' unless attr_exists
     raise '[ERROR:GameProcessor] Init params out of range ' unless attr_range_match
     
-    @rows, @cols, @bombs = r, c, b
-    
+    @rows, @cols, @bombs, @zoom = r, c, b, z
+
     init_map
+    @started = true
   end
   
   #private

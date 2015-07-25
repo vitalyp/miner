@@ -27,19 +27,25 @@
   </script>
 </head>
 <body>
+  your session key: <%#= session_key %>
+  MinerGameContainer games: <%= MinerGameContainer.get_games.size %>
   <h1 class="title_text c_align"><a href="http://github.com/vitalyp" title="Autor..">Miner Game</a></h1>
   <div class="information c_align"><a href="/new" title="Restart">Reset Game</a></div>
 
   <div class="container c_align">
-    <% miner_game_h.times do |h| %>
-      <% miner_game_w.times do |w| %>
-        <% index = h*miner_game_w+w %>
-        <div class="cell closed" onclick="window.location='/clicked/<%= index %>'">
-          <%= game.map[index] if game && game.map  %>
-        </div>
+    <% if game.started %>
+      <% game.rows.times do |h| %>
+          <% game.cols.times do |w| %>
+              <% index = h*game.cols+w %>
+              <div class="cell closed" onclick="window.location='/clicked/<%= index %>'">
+                <%= game.map[index] if game && game.map  %>
+              </div>
+          <% end %>
+          <br/>
       <% end %>
-      <br/>
     <% end %>
+
+
   </div>
 
   <div class="information c_align">

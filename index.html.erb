@@ -27,8 +27,9 @@
   </script>
 </head>
 <body>
-  your session key: <%#= session_key %>
-  MinerGameContainer games: <%= MinerGameContainer.get_games.size %>
+  <i>your session key: <%= session_key[0..5] %>...</i>
+  <i>total games: <%= MinerGameContainer.get_games.size %></i>
+
   <h1 class="title_text c_align"><a href="http://github.com/vitalyp" title="Autor..">Miner Game</a></h1>
   <div class="information c_align"><a href="/new" title="Restart">Reset Game</a></div>
 

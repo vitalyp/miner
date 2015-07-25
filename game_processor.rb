@@ -18,6 +18,9 @@ class MinerGameContainer
     end
     game
   end
+  def self.delete_by_sess_key(sess_key)
+    @@data.delete_if{|g| g.sess_key == sess_key}
+  end
   def self.get_games
     @@data
   end

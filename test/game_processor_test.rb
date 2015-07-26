@@ -6,7 +6,7 @@ class TestGameProcessor <  Minitest::Test
     @game_processor = MinerGameProcessor.new('session_934757')
     @game_processor.rows = 4
     @game_processor.cols = 4
-    @game_processor.bombs = 1
+    @game_processor.bombs = 5
     x = MinerGameProcessor::CELL[:mine]
     @game_processor.map = [
         [0, 0, 0, x],
@@ -54,6 +54,19 @@ class TestGameProcessor <  Minitest::Test
     # out of bounds:
     assert_equal(false, @game_processor.bomb_at(-1))
     assert_equal(false, @game_processor.bomb_at(100))
+  end
+
+  def test_place_bombs
+    @game_processor.map =
+    @game_processor.place_bombs
+    mines = @game_processor.map.select{|c| c == MinerGameProcessor::CELL[:mine]}
+
+  end
+
+  def test_init_map
+    @game_processor.init_map
+    mines = @game_processor.map.select{|c| c == MinerGameProcessor::CELL[:mine]}
+
   end
 
 end

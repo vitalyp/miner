@@ -56,17 +56,17 @@ class TestGameProcessor <  Minitest::Test
     assert_equal(false, @game_processor.bomb_at(100))
   end
 
-  def test_place_bombs
-    @game_processor.map =
-    @game_processor.place_bombs
-    mines = @game_processor.map.select{|c| c == MinerGameProcessor::CELL[:mine]}
-
-  end
-
-  def test_init_map
-    @game_processor.init_map
-    mines = @game_processor.map.select{|c| c == MinerGameProcessor::CELL[:mine]}
-
-  end
+  # def test_place_bombs
+  #   @game_processor.map =
+  #   @game_processor.place_bombs
+  #   mines = @game_processor.map.select{|c| c == MinerGameProcessor::CELL[:mine]}
+  #
+  # end
+  #
+  # def test_init_map
+  #   @game_processor.init_map
+  #   mines = @game_processor.map.select{|c| c == MinerGameProcessor::CELL[:mine]}
+  #
+  # end
 
 end

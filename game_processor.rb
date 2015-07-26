@@ -36,6 +36,14 @@ class MinerGameProcessor
   def initialize(sess_key)
     @sess_key= sess_key
   end
+
+  def minedCell c
+    c!=CELL[:mine]
+  end
+
+  def mine
+    CELL[:mine]
+  end
   
   # Construct new game map with specified attributes:
   # <r> - map rows count, <c> - map columns count, <b> - mines count per map, <z> - cell zoom factor (px)
@@ -75,6 +83,8 @@ class MinerGameProcessor
     count += 1 if bomb_at(index+@cols+1, row+1) # bottom-right, row below
     count
   end
+
+
   
   def init_map
     @map = Array.new(@rows*@cols){ |index| index}
@@ -95,4 +105,36 @@ class MinerGameProcessor
     @map[index] = -@map[index] if @map[index].to_i < 0
   end
 
+end
+
+module MineMap
+  # put 'n' mines in random cells
+  def put_mines(n)
+    n.times do
+      free_indexes = @map.map.with_index{|x, i| i unless minedCell(x)}.compact
+      rand_index = rand(free_indexes.size)
+      @map[free_indexes[rand_index]] = mine
+    end
+  end
+
+  def mine_at(index, exact_row=nil)
+    return false if exact_row && index/@cols != exact_row
+    row = index/@cols
+    row < 0 || row >= @rows || index < 0 || index > @rows*@cols || @map[index] != CELL[:mine] ? false : true
+  end
+
+  # calculate mines around cell with index 'i'
+  def mines_count_around(i)
+    count = 0
+    row = index/@cols
+    count += 1 if bomb_at(index-1, row) # left, same row
+    count += 1 if bomb_at(index+1, row) # right, same row
+    count += 1 if bomb_at(index-@cols, row-1) # top, row above
+    count += 1 if bomb_at(index+@cols, row+1) # bottom, row below
+    count += 1 if bomb_at(index-@cols-1, row-1) # top-left, row above
+    count += 1 if bomb_at(index-@cols+1, row-1) # top-right, row above
+    count += 1 if bomb_at(index+@cols-1, row+1) # bottom-left, row below
+    count += 1 if bomb_at(index+@cols+1, row+1) # bottom-right, row below
+    count
+  end
 end

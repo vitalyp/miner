@@ -1,4 +1,5 @@
-require './miner_game_config'
+require_relative './miner_game_config'
+require_relative './game_processor'
 
 # Contains and Produces isolated Game entities
 class MinerGameContainer

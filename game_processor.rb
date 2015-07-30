@@ -1,20 +1,14 @@
-require './mine_map'
-require './miner_game_config'
+require_relative './mine_map'
+require_relative './miner_game_config'
 
-# Game processor is a multy-session, persisted instance.
+# Game processor is a multi-session, persisted instance.
 # It contains isolated Games entities, and responsible for it
 class MinerGameProcessor
   include MineMap
   attr_accessor(:rows, :cols, :bombs, :zoom, :map, :sess_key, :started)
-  CELL = { mine: 'x' }
+
   def initialize(sess_key)
     @sess_key= sess_key
-  end
-  def minedCell c
-    c==CELL[:mine]
-  end
-  def mine
-    CELL[:mine]
   end
   
   # Construct new game map with specified attributes:
@@ -38,13 +32,10 @@ class MinerGameProcessor
   def init_map
     @map = Array.new(@rows*@cols){ |index| index}
     put_mines(@bombs)
-    #put numbers
-    @map.each_with_index do |x, i|
-      next if minedCell(x)
-      @map[i] = -mines_count_around(i)
-    end
+    put_mines_counts
   end
-  
+
+  # use negative values for hidden cells, and positive values for opened ones;
   def click_to(index)
     @map[index] = -@map[index] if @map[index].to_i < 0
   end

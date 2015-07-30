@@ -23,6 +23,7 @@
       document.getElementById('range_w').addEventListener('change', function(){ document.getElementById('current_range_w').innerHTML = this.value; });
       document.getElementById('bombs_c').addEventListener('change', function(){ document.getElementById('current_bombs_c').innerHTML = this.value; });
       document.getElementById('zoom_px').addEventListener('change', function(){ document.getElementById('current_zoom_px').innerHTML = this.value; });
+      <%= "alert('boom!')" if game.boom %>
     });
   </script>
 </head>
@@ -38,8 +39,10 @@
       <% game.rows.times do |h| %>
           <% game.cols.times do |w| %>
               <% index = h*game.cols+w %>
-              <div class="cell closed" onclick="window.location='/clicked/<%= index %>'">
-                <%= game.map[index] if game && game.map  %>
+              <% opened_cell = game.opened_cell?(index) %>
+              <% div_class = opened_cell ? 'cell opened' : 'cell closed' %>
+              <div class="<%= div_class %>" onclick="window.location='/clicked/<%= index %>'">
+                <span><%= game.map[index] if opened_cell %></span>
               </div>
           <% end %>
           <br/>

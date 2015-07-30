@@ -21,6 +21,7 @@
     display: inline-block;
     height: 30px;
     margin: 2px;
+    overflow: hidden;
     width: 30px;
 }
 .cell.closed {

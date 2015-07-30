@@ -1,12 +1,34 @@
 # map array methods
 module MineMap
-  CELL = { mine: 'x' }
-  def minedCell(c)
-    c == mine
-  end
+
+  CELL = { mine: 'x', opened_empty: ' ', closed_empty: 0 }
   def mine
     CELL[:mine]
   end
+  def minedCell(c)
+    c == mine
+  end
+  def closed_empty_cell?(c)
+    c == CELL[:closed_empty]
+  end
+  def opened_cell?(index)
+    cell = @map[index]
+    cell != mine && (cell == CELL[:opened_empty] || cell.to_i > 0)
+  end
+  def open(index)
+    return if index < 0 || index >= @rows*@cols
+    return if minedCell(@map[index])
+    return if opened_cell?(index)
+    @map[index] = closed_empty_cell?(@map[index]) ? CELL[:opened_empty] : @map[index].abs
+    if @map[index] == CELL[:opened_empty]
+      row = index/@cols
+      open(index-1) if !mine_at(index-1, row)
+      open(index+1) if !mine_at(index+1, row)
+      open(index-@cols) if !mine_at(index-@cols, row-1)
+      open(index+@cols) if !mine_at(index+@cols, row+1)
+    end
+  end
+
   # put 'n' mines in random cells
   def put_mines(n)
     n.times do

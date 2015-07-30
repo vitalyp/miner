@@ -5,7 +5,7 @@ require_relative './miner_game_config'
 # It contains isolated Games entities, and responsible for it
 class MinerGameProcessor
   include MineMap
-  attr_accessor(:rows, :cols, :bombs, :zoom, :map, :sess_key, :started)
+  attr_accessor(:rows, :cols, :bombs, :zoom, :map, :sess_key, :started, :boom)
 
   def initialize(sess_key)
     @sess_key= sess_key
@@ -14,6 +14,7 @@ class MinerGameProcessor
   # Construct new game map with specified attributes:
   # <r> - map rows count, <c> - map columns count, <b> - mines count per map, <z> - cell zoom factor (px)
   def init_game(r, c, b, z)
+    @boom = false
     r ||= MinerGameConfig::DEFAULTS[:map_rows]
     c ||= MinerGameConfig::DEFAULTS[:map_cols]
     b ||= MinerGameConfig::DEFAULTS[:map_bombs]
@@ -37,6 +38,8 @@ class MinerGameProcessor
 
   # use negative values for hidden cells, and positive values for opened ones;
   def click_to(index)
-    @map[index] = -@map[index] if @map[index].to_i < 0
+    return false if minedCell(@map[index])
+    open(index)
+    true
   end
 end

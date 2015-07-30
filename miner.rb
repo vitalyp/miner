@@ -23,9 +23,9 @@ game_server.mount_proc('/'){ |req, resp|
       game.init_game(req.query['h'].to_i, req.query['w'].to_i, req.query['b'].to_i, req.query['z'].to_i) rescue
           MinerGameContainer.delete_by_sess_key(session_key)
       resp.set_redirect WEBrick::HTTPStatus::TemporaryRedirect, '/'
-    when '/clicked'
-      clicked_index = req.query["clicked_index"].to_i
-      game.click_to(clicked_index)
+    when /clicked\//
+      clicked_index = req.path.split('clicked/')[1].to_i
+      game.boom = true unless game.click_to(clicked_index)
       resp.set_redirect WEBrick::HTTPStatus::TemporaryRedirect, '/'
     else
       b = binding

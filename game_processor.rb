@@ -29,7 +29,7 @@ class MinerGameProcessor
     init_map
     @started = true
   end
-  
+
   def init_map
     @map = Array.new(@rows*@cols){ |index| index}
     put_mines(@bombs)
@@ -38,7 +38,7 @@ class MinerGameProcessor
 
   # use negative values for hidden cells, and positive values for opened ones;
   def click_to(index)
-    return false if minedCell(@map[index])
+    return false if mined_cell?(@map[index])
     open(index)
     true
   end

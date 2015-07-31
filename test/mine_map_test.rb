@@ -108,4 +108,65 @@ class TestMineMap <  Minitest::Test
     @testMineMap.put_mines_counts(+1)
     assert_equal(correct_mines_counts_map, @testMineMap.instance_variable_get('@map'))
   end
+
+  # test 1 based on real Miner game logic:
+  def test_open_1
+    x = @testMineMap.mine
+    @testMineMap.instance_variable_set '@map', [ 0,0,0,0,0,0,0,x,x,
+                                                 0,0,0,0,x,0,0,0,0,
+                                                 x,0,0,0,0,x,0,0,0,
+                                                 0,0,0,0,0,0,0,0,0,
+                                                 0,0,0,0,0,0,0,0,0,
+                                                 0,0,0,0,0,0,0,0,0,
+                                                 0,0,x,0,x,0,0,x,0,
+                                                 x,0,0,0,0,x,0,0,0,
+                                                 0,0,0,0,0,0,0,0,0]
+    @testMineMap.instance_variable_set '@rows', 9
+    @testMineMap.instance_variable_set '@cols', 9
+    @testMineMap.put_mines_counts(+1)
+
+    e = @testMineMap.opened_empty
+    correct_opened_cells_on_click_0_0 = [ e,e,e,1,1,1,1,x,x,
+                                          1,1,e,1,x,2,2,2,2,
+                                          x,1,e,1,2,x,1,e,e,
+                                          1,1,e,e,1,1,1,e,e,
+                                          e,e,e,e,e,e,e,e,e,
+                                          e,1,1,2,1,1,1,1,1,
+                                          1,2,x,2,x,2,2,x,1,
+                                          x,2,1,2,2,x,2,1,1,
+                                          1,1,0,0,1,1,1,0,0]
+    @testMineMap.open(0)
+    assert_equal(correct_opened_cells_on_click_0_0, @testMineMap.instance_variable_get('@map'))
+  end
+
+  # test 2 based on real Miner game logic:
+  def test_open_2
+    x = @testMineMap.mine
+    @testMineMap.instance_variable_set '@map', [ 0,0,0,0,0,0,0,0,0,
+                                                 0,0,0,0,0,0,x,0,0,
+                                                 x,0,0,x,0,0,0,0,0,
+                                                 0,0,0,0,0,x,0,0,0,
+                                                 0,0,0,0,x,0,0,0,0,
+                                                 0,0,x,0,0,0,0,0,0,
+                                                 0,0,x,0,x,0,0,x,x,
+                                                 0,0,0,0,0,0,0,0,0,
+                                                 0,0,0,0,0,0,0,0,0]
+    @testMineMap.instance_variable_set '@rows', 9
+    @testMineMap.instance_variable_set '@cols', 9
+    @testMineMap.put_mines_counts(+1)
+
+    e = @testMineMap.opened_empty
+    correct_opened_cells_on_click_0_0 = [ e,e,e,e,e,1,1,1,0,
+                                          1,1,1,1,1,1,x,1,0,
+                                          x,1,1,x,2,2,2,1,0,
+                                          1,1,1,2,3,x,1,0,0,
+                                          0,1,1,2,x,2,1,0,0,
+                                          0,2,x,4,2,2,1,2,2,
+                                          0,2,x,3,x,1,1,x,x,
+                                          0,1,1,2,1,1,1,2,2,
+                                          0,0,0,0,0,0,0,0,0]
+    @testMineMap.open(0)
+    assert_equal(correct_opened_cells_on_click_0_0, @testMineMap.instance_variable_get('@map'))
+  end
+
 end

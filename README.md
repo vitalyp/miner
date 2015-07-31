@@ -10,4 +10,4 @@
 
     rake
 
-> 10 runs, 40 assertions, 0 failures, 0 errors, 0 skips
+> 12 runs, 42 assertions, 0 failures, 0 errors, 0 skips
